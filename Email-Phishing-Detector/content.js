@@ -5,20 +5,21 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     const regex = new RegExp(expression, 'gi')
     // const matches = document.documentElement.innerHTML.match(regex)
 
-    let emailBody = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div")
-    // let emailBody = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div[2]/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[3]/div[3]/div[1]")
+    // let emailBody = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div")
+    let emailBody = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[3]/div[3]/div")
 
-    let matchesUrl = emailBody.innerHTML.match(regex)
+    // let matchesUrl = emailBody.innerHTML.match(regex)
 
     var htmlCollection = emailBody.getElementsByTagName("a")
-    // htmlCollection = Array.from(htmlCollection)
-    
-    let totalUrl = matchesUrl.length
-    var urlFromHref = ""
+    var urls = ""
 
-    console.log(htmlCollection)
-
-    sendResponse({email: matchesUrl})
+    for (let index = 0; index < htmlCollection.length; index++) {
+        if (!htmlCollection[index].href.includes("mailto")) {
+            urls += htmlCollection[index].href
+        }
+    }
+    console.log(urls)
+    sendResponse({email: urls})
 })
 
 function getElementByXpath(path) {
