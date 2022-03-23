@@ -9,11 +9,28 @@ document.addEventListener('DOMContentLoaded', function() {
     } 
 
     function setUrlFound (res) {
-        const div = document.createElement('div')
-        div.textContent = `${res.email} urls`
+        showElement()
 
-        var allUrl = document.getElementById('all-url')
-        allUrl.innerText = res.email        
+        var allUrl = document.getElementById('url-list')
+        if (res.email != null) {
+            allUrl.innerText = res.subject + "\n" + res.sender + "\n" + res.email
+        } else {
+            allUrl.innerText = "no url(s) found"
+        }
+    }
+
+    function showElement() {
+        var containerId1 = document.getElementById('1')
+        var containerId2 = document.getElementById('2')
+        var textId = document.getElementById('demo')
+
+        if (containerId1.style.display == "none") {
+            return
+        } else {
+            containerId1.style.display = "flex"
+            containerId2.style.display = "flex"
+            textId.style.display = "none"
+        }
     }
 
 } , false)
