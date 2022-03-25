@@ -7,6 +7,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     let emailSubjectPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/table/tr/td[1]/div[2]/div[1]")
     let emailSenderPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[1]/table/tbody/tr[1]/td[1]/table/tbody/tr/td/h3")
 
+    var emailBody = emailBodyPath.innerText
     var emailBodyUrl = emailBodyPath.getElementsByTagName("a")
     var emailSubjectHtml = emailSubjectPath.getElementsByTagName("h2")[0].textContent
     var emailSenderHtml = emailSenderPath.getElementsByTagName("span")
@@ -31,7 +32,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }
     }
 
-    sendResponse({subject: emailSubjectHtml, sender: emailSender, email: urls})
+    sendResponse({subject: emailSubjectHtml, sender: emailSender, body: emailBody, url: urls})
 })
 
 function getElementByXpath(path) {
