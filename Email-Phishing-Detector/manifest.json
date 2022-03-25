@@ -10,7 +10,8 @@
             "js": ["content.js"]
         }
     ],
-    "permissions": ["activeTab"],
+    "permissions": ["tabs"],
+    "host_permissions": ["*://mail.google.com/*"],
     "action": {
         "default_popup": "popup.html",
         "default_title": "Detect email phishing easily!"

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,35 +10,62 @@
 <body>
     <h1>PhishTector</h1>
 
-    <p align="center">Click on the 'Detect' button in the email that you think are suspicious 👀</p>
+    <p id="demo" align="center">Click on the 'Detect' button in the email that you think are suspicious 👀</p>
     <br>
-    <div class="container">
-        <p align="center", style="font-size: 18px;"><b>This Email is ...</b></p>
 
-        <div class="container-text-left">
-            <p align="left", class="text"><b>URL detected in this email:</b></p>
-            <p align="left", class="text", id="all-url">ntar semua url dari email tarok sini</p>
+    <div class="test">
+        <div id="1" class="block-1">
+            <p align="center", style="font-size: 18px;"><b>This Email is ...</b></p>
         </div>
 
-        <div class="container-text-right">
-            <p align="right", class="text"><b>Suspicious URL detected in this email:</b></p>
-            <p align="left", class="sus-text">ntar semua url yg sus tarok sini</p>
-        </div>
+        <br>
 
-        <div class="center">
-            <div class="container-btn-middle">
-                <button class="button">Detect</button>
+        <div id="2" class="block-2">
+            <div class="detected-url-box">
+                <p align="center", style="font-size: 18px;"><b>Detected url(s)</b></p>
+                <p id="url-list" align="center", style="font-size: 12px;"></p>
             </div>
             
         </div>
+
+    </div>    
+
+    <div class="center">
+        <div class="container-btn-middle">
+            <button class="button" onclick=myFunction()>Detect</button>
+        </div>
+        
     </div>
     
-    <script src="popup.js"></script>
+    <script src="popup.js">
+    </script>
     
     <style>
+
+        .test {
+            margin: 0;
+            position: absolute;
+            left: 50%;
+            -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+
+        .detected-url-box {
+            position: absolute;
+            align-items: center;
+        }
+
+        .url-list {
+            font-size: 10px;
+            font-weight: 400;
+        }
+
         .button {
-            background-color: rgb(164, 5, 74);
+            background-color: #363432;
             border: none;
+            width: 320px;
+            height: 47px;
+            border-radius: 8px;
             color: white;
             padding: 15px 32px;
             text-align: center;
@@ -48,7 +76,32 @@
             cursor: pointer;
         }
 
+        .block-1 {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            background-color: #00D168;
+            width: 320px;
+            height: 47px;
+            border-radius: 8px;
+        }
+
+        .block-2 {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: #5A564F;
+            background-color: #EEEEEE;
+            width: 320px;
+            height: 300px;
+            border-radius: 8px;
+            font-family: 'Roboto';
+            font-weight: bolder;
+        }
+
         .container {
+            display: none;
             background-color: linen;
             min-width: 100px;
             min-height: 250px;
@@ -68,7 +121,7 @@
 
         .container-btn-middle{
             position: absolute;
-            bottom: 52px;
+            bottom: 20px;
         }
 
         .center {
@@ -88,8 +141,8 @@
 
         html {
             position: relative;
-            min-width: 320px;
-            min-height: 500px;
+            width: 360px;
+            height: 540px;
         }
     </style>
 </body>
