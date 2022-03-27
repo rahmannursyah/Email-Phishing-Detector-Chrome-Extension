@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var allUrl = document.getElementById('url-list')
         if (res.url != null) {
-            allUrl.innerText = res.subject + "\n" + res.sender + "\n" + res.body + "\n" + res.url
+            allUrl.innerText = res.subject + "\n" + res.sender + "\n" + res.url + "\n"
         } else {
             allUrl.innerText = "no url(s) found"
         }
