@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
         })        
     } 
 
-    async function setUrlFound (res) {
-        var response = await postAIResponse(res)
+    function setUrlFound (res) {
+        var response = postAIResponse(res)
         showElement(res)
 
         var allUrl = document.getElementById('url-list')
