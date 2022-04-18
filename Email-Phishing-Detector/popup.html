@@ -10,35 +10,41 @@
 <body>
     <h1>PhishTector</h1>
 
-    <p id="demo" align="center">Click on the 'Detect' button in the email that you think are suspicious 👀</p>
-    <br>
+    <p id="demo" align="center">Click on the 'Detect' button in the email that you think is suspicious 👀</p>
+    <!-- <br> -->
+
+    <div id="loading"></div>
 
     <div class="test">
         <div id="1" class="block-1">
-            <p align="center", style="font-size: 18px;"><b>This Email is ...</b></p>
+            <p id="email-res" align="center"><b>This Email is ...</b></p>
         </div>
 
-        <br>
+    <br>
 
+    <div class="test">
         <div id="2" class="block-2">
-            <div class="detected-url-box">
-                <p align="center", style="font-size: 18px;"><b>Detected url(s)</b></p>
-                <p id="url-list" align="center", style="font-size: 12px;"></p>
-            </div>
-            
+            <br>
+            <p id="detail" align="center">This email has suspicious content in its subject, body, or url(s) that are detected by our system.</p>
+            <hr style="width: 90%;">
+            <br>
+            <img src="./image/safe-illustration.png" class="src" id="image" width="120" height="108">
         </div>
+    </div> 
 
-    </div>    
-
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <div class="center">
         <div class="container-btn-middle">
-            <button class="button" onclick=myFunction()>Detect</button>
+            <button id="3" class="button" onclick="spinner()">Detect</button>
         </div>
-        
     </div>
-    
+
     <script src="popup.js"></script>
-    
+
     <style>
 
         .test {
@@ -57,6 +63,30 @@
         .url-list {
             font-size: 10px;
             font-weight: 400;
+        }
+
+        #loading {
+            width: 2rem;
+            height: 2rem;
+            border: 5px solid #f3f3f3;
+            border-top: 6px solid #0f0e0f;
+            border-radius: 100%;
+            margin: auto;
+            visibility: hidden;
+            animation: spin 1s infinite linear;
+        }
+
+        #loading.display {
+            visibility: visible;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .button {
@@ -81,23 +111,49 @@
             align-items: center;
             color: white;
             background-color: #00D168;
-            width: 320px;
+            width: 300px;
             height: 47px;
             border-radius: 8px;
+            font-family: 'Roboto';
+            font-weight: 600;
+            font-size: 18px;
         }
 
         .block-2 {
             display: none;
-            justify-content: center;
             align-items: center;
-            color: #5A564F;
-            background-color: #EEEEEE;
-            width: 320px;
-            height: 300px;
+            background-color: white;
             border-radius: 8px;
             font-family: 'Roboto';
-            font-weight: bolder;
+            font-weight: 900;
+            font-size: 14px;
+            width: 300px;
+            height: 250px;
         }
+
+        .block-2 p {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .block-2 img {
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* .block-2 {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: #000000;
+            background-color: #FFFFFF;
+            width: 300px;
+            height: 230px;
+            border-radius: 8px;
+            font-family: 'Roboto';
+            font-weight: 600;
+            font-size: 10px;
+        } */
 
         .container {
             display: none;
@@ -140,8 +196,9 @@
 
         html {
             position: relative;
-            width: 360px;
-            height: 540px;
+            width: 340px;
+            height: 400px;
+            background-color: #f4f4f4;
         }
     </style>
 </body>

@@ -344,26 +344,47 @@ function checkBodyHasUnsubscribe(emailBody) {
 // TOTAL FEATURES = 25
 
 function getUrlFeatures(urlsInEmail, tagAElements) {
-    var totalUrlInEmail = countUrlInEmail(urlsInEmail)
-    var urlWithAt = searchAtSymbolInUrl(urlsInEmail)
-    var susWordInUrl = countSusWordInUrl(tagAElements)
-    var isUrlWithIp = checkForIpInUrl(urlsInEmail)
-    var totalUrlWithIp = countUrlsWithIp(urlsInEmail)
-    var totalDomainInUrl = countDomainInUrl(urlsInEmail)
-    var totalUrlWithImg = countUrlWithImgLink(urlsInEmail)
-    var totalPeriodInUrl = countPeriodInUrl(urlsInEmail)
-    var isUrlWithPort = checkUrlWithPort(urlsInEmail)
-    var totalUrlWithPort = countUrlWithPort(urlsInEmail)
-    var isUrlShortened = checkForUrlShortening(urlsInEmail) 
-    var totalShortenedUrl = countUrlShortening(urlsInEmail)
-    var isHttpInUrl = checkHttpInUrl(urlsInEmail)
-    var totalHttpUrl = countUrlWithHttp(urlsInEmail)
-    var isLongUrl = checkLongUrl(urlsInEmail)
-    var totalLongUrl = countLongUrl(urlsInEmail)
-    var emailUrlFeaturesArr = new Array(urlWithAt, susWordInUrl, isUrlWithIp, totalDomainInUrl, totalUrlWithImg, totalUrlWithIp, totalUrlInEmail, totalPeriodInUrl
-        , totalUrlWithPort, isUrlWithPort, isUrlShortened, totalShortenedUrl, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl)
-
-    return emailUrlFeaturesArr
+    if (urlsInEmail.count == null) {
+        var totalUrlInEmail = 0
+        var urlWithAt = 0
+        var susWordInUrl = 0
+        var isUrlWithIp = 0
+        var totalUrlWithIp = 0
+        var totalDomainInUrl = 0
+        var totalUrlWithImg = 0
+        var totalPeriodInUrl = 0
+        var isUrlWithPort = 0
+        var totalUrlWithPort = 0
+        var isUrlShortened = 0
+        var totalShortenedUrl = 0
+        var isHttpInUrl = 0
+        var totalHttpUrl = 0
+        var isLongUrl = 0
+        var totalLongUrl = 0
+        var emailUrlFeaturesArr = new Array(urlWithAt, susWordInUrl, isUrlWithIp, totalDomainInUrl, totalUrlWithImg, totalUrlWithIp, totalUrlInEmail, totalPeriodInUrl
+            , totalUrlWithPort, isUrlWithPort, isUrlShortened, totalShortenedUrl, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl)
+        return emailUrlFeaturesArr
+    } else {
+        var totalUrlInEmail = countUrlInEmail(urlsInEmail)
+        var urlWithAt = searchAtSymbolInUrl(urlsInEmail)
+        var susWordInUrl = countSusWordInUrl(tagAElements)
+        var isUrlWithIp = checkForIpInUrl(urlsInEmail)
+        var totalUrlWithIp = countUrlsWithIp(urlsInEmail)
+        var totalDomainInUrl = countDomainInUrl(urlsInEmail)
+        var totalUrlWithImg = countUrlWithImgLink(urlsInEmail)
+        var totalPeriodInUrl = countPeriodInUrl(urlsInEmail)
+        var isUrlWithPort = checkUrlWithPort(urlsInEmail)
+        var totalUrlWithPort = countUrlWithPort(urlsInEmail)
+        var isUrlShortened = checkForUrlShortening(urlsInEmail) 
+        var totalShortenedUrl = countUrlShortening(urlsInEmail)
+        var isHttpInUrl = checkHttpInUrl(urlsInEmail)
+        var totalHttpUrl = countUrlWithHttp(urlsInEmail)
+        var isLongUrl = checkLongUrl(urlsInEmail)
+        var totalLongUrl = countLongUrl(urlsInEmail)
+        var emailUrlFeaturesArr = new Array(urlWithAt, susWordInUrl, isUrlWithIp, totalDomainInUrl, totalUrlWithImg, totalUrlWithIp, totalUrlInEmail, totalPeriodInUrl
+            , totalUrlWithPort, isUrlWithPort, isUrlShortened, totalShortenedUrl, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl)
+        return emailUrlFeaturesArr
+    }
 }
 
 function getEmailSubjectFeatures(emailSubject) {

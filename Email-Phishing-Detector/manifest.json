@@ -1,7 +1,7 @@
 {
-    "name": "Test extension",
+    "name": "PhishTector",
     "description": "Easily detect phishing email, so you don't have to worry about getting your account hacked or stolen",
-    "version": "1.0",
+    "version": "0.1",
     "icons": {"128": "./icons/icon_128.png"},
     "manifest_version": 3,
     "content_scripts": [
