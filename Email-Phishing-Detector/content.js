@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             urls.push(emailBodyUrl[index].href)
         }
     }
-    
+
     for (let index = 0; index < emailSenderHtml.length; index++) {
         if (emailSenderHtml[index].innerText.includes("@") && emailSenderHtml[index].innerText.includes("<")) {
             let tmpEmail = emailSenderHtml[index].innerText
@@ -58,12 +58,21 @@ function substring(myString) {
 // MARK: HEADER FEATURES
 
 function countSusWordInSubject(subjectInEmail) {
-    let susWord = ['bank', 'debit', 'verify', 'password', 'attention', 'credit', 'urgent', 'billing', 'account', 'invoice']
+    let susWord = ['bank', 'debit', 'verify', 'password', 'attention', 'credit', 'urgent', 'billing', 'account', 'invoice', 'important']
     var count = 0
+    var words = subjectInEmail.split(' ')
+    var susWordsInBody = []
+    
+    for (let i = 0; i < words.length; i++) {
+        for (let j = 0; j < susWord.length; j++) {
+            if (words[i].toLowerCase().includes(susWord[j].toLowerCase())) {
+                susWordsInBody.push(susWord[j])
+            }
+        }
+    }
 
-    susWord.forEach(sus => {
-        count += subjectInEmail.toLowerCase().split(sus).length - 1
-    });
+    var uniqueSusWordsInBody = [...new Set(susWordsInBody)]
+    count = uniqueSusWordsInBody.length
 
     return count
 }
@@ -94,13 +103,11 @@ function countSusWordInUrl(tagAElements) {
 
     for (let index = 0; index < tagAElements.length; index++) {
         for (let j = 0;  j< susWord.length; j++) {
-            // let lowerCaseText = tagAElements[index].innerText
            if (tagAElements[index].innerText.toLowerCase().includes(susWord[j])) {
                count += 1
            }
         }
     }
-
     return count
 }
 
@@ -309,18 +316,23 @@ function countWordInBody(emailBody) {
     return emailBody.split(' ').length
 }
 
-susWord = ['account', 'access', 'bank', 'credit', 'click', 'identity', 'incovenience', 'information', 'limited', 'log', 'minutes', 'password', 'recently', 'risk', 'social', 'security', 'service', 'suspended', 'urgent', 'calls', 'paid', 'need', 'gift', 'gifts', 'cards', 'card', 'urgently', 'response', 'needed', 'login', 'expiring','soon', 'immediate', 'immediately', 'free', 'detect', 'pay', 'job', 'access', 'expire', 'friend', 'lowest', 'price', 'serious', 'action', 'database', 'winner', 'refund', 'files', 'activate', 'activated', 'wage', 'vital', 'irregular', 'docs', 'invited', 'account', 'notice', 'service', 'bcourse', 'employee', 'employment', 'phone', 'information', 'suspension', 'verify', 'billing']
+let susWord = ['login', 'account', 'access', 'bank', 'credit', 'click', 'identity', 'incovenience', 'information', 'limited', 'log', 'minutes', 'password', 'recently', 'risk', 'social', 'security', 'service', 'suspended', 'urgent', 'calls', 'paid', 'need', 'gift', 'gifts', 'cards', 'card', 'urgently', 'response', 'needed', 'login', 'expiring', 'soon', 'immediate', 'immediately', 'free', 'detect', 'pay', 'job', 'access', 'expire', 'friend', 'lowest', 'price', 'serious', 'action', 'database', 'winner', 'refund', 'files', 'activate', 'activated', 'wage', 'vital', 'irregular', 'docs', 'invited', 'account', 'notice', 'service', 'bcourse', 'employee', 'employment', 'phone', 'information', 'suspension', 'verify', 'billing', 'urgent']
 
 function countSusWordInBody(emailBody) {
     var count = 0
-
-    for(let i = 0; i<emailBody.length; i++) {
-        for(let j = 0; j<susWord.length; j++) {
-            if (emailBody[i].toLowerCase().includes(susWord[j])) {
-                count += 1
+    var words = emailBody.split(' ')
+    var susWordsInBody = []
+    
+    for (let i = 0; i < words.length; i++) {
+        for (let j = 0; j < susWord.length; j++) {
+            if (words[i].toLowerCase().includes(susWord[j].toLowerCase())) {
+                susWordsInBody.push(susWord[j])
             }
         }
     }
+
+    var uniqueSusWordsInBody = [...new Set(susWordsInBody)]
+    count = uniqueSusWordsInBody.length
 
     return count
 }
@@ -344,7 +356,7 @@ function checkBodyHasUnsubscribe(emailBody) {
 // TOTAL FEATURES = 25
 
 function getUrlFeatures(urlsInEmail, tagAElements) {
-    if (urlsInEmail.count == null) {
+    if (urlsInEmail == "") {
         var totalUrlInEmail = 0
         var urlWithAt = 0
         var susWordInUrl = 0
@@ -388,23 +400,39 @@ function getUrlFeatures(urlsInEmail, tagAElements) {
 }
 
 function getEmailSubjectFeatures(emailSubject) {
-    var totalSusWordInSubject = countSusWordInSubject(emailSubject)
-    var totalCharacterInSubject = countCharacterInSubject(emailSubject)
-    var totalWordsInSubject = countWordsInSubject(emailSubject)
-    var totalSubjectRichness = countSubjectRichness(emailSubject)
-    var emailSubjectFeaturesArr = new Array(totalSusWordInSubject, totalWordsInSubject, totalCharacterInSubject, totalSubjectRichness)
-
-    return emailSubjectFeaturesArr
+    if (emailSubject == "") {
+        var totalSusWordInSubject = 0
+        var totalCharacterInSubject = 0
+        var totalWordsInSubject = 0
+        var totalSubjectRichness = 0
+        var emailSubjectFeaturesArr = new Array(totalSusWordInSubject, totalWordsInSubject, totalCharacterInSubject, totalSubjectRichness)
+        return emailSubjectFeaturesArr
+    } else {
+        var totalSusWordInSubject = countSusWordInSubject(emailSubject)
+        var totalCharacterInSubject = countCharacterInSubject(emailSubject)
+        var totalWordsInSubject = countWordsInSubject(emailSubject)
+        var totalSubjectRichness = countSubjectRichness(emailSubject)
+        var emailSubjectFeaturesArr = new Array(totalSusWordInSubject, totalWordsInSubject, totalCharacterInSubject, totalSubjectRichness)
+        return emailSubjectFeaturesArr
+    }
 }
 
 function getEmailBodyFeatures(emailBody) {
-    var totalCharacterInBody = countCharacterInBody(emailBody)
-    var totalWordsInBody = countWordInBody(emailBody)
-    var totalSusWordInBody = countSusWordInBody(emailBody)
-    var totalBodyRichness = countBodyRichness(emailBody)
-    var isBodyHasUnsubscribe = checkBodyHasUnsubscribe(emailBody)
-
-    var emailBodyFeaturesArr = new Array(isBodyHasUnsubscribe, totalCharacterInBody, totalWordsInBody, totalBodyRichness, totalSusWordInBody)
-
-    return emailBodyFeaturesArr
+    if (emailBody == "") {
+        var totalCharacterInBody = 0
+        var totalWordsInBody = 0
+        var totalSusWordInBody = 0
+        var totalBodyRichness = 0
+        var isBodyHasUnsubscribe = 0
+        var emailBodyFeaturesArr = new Array(isBodyHasUnsubscribe, totalCharacterInBody, totalWordsInBody, totalBodyRichness, totalSusWordInBody)
+        return emailBodyFeaturesArr
+    } else {
+        var totalCharacterInBody = countCharacterInBody(emailBody)
+        var totalWordsInBody = countWordInBody(emailBody)
+        var totalSusWordInBody = countSusWordInBody(emailBody)
+        var totalBodyRichness = countBodyRichness(emailBody)
+        var isBodyHasUnsubscribe = checkBodyHasUnsubscribe(emailBody)
+        var emailBodyFeaturesArr = new Array(isBodyHasUnsubscribe, totalCharacterInBody, totalWordsInBody, totalBodyRichness, totalSusWordInBody)
+        return emailBodyFeaturesArr
+    }
 }

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('button').addEventListener('click', onClick, false)
 
-    const loader = document.getElementById('loading')
+    const loader = document.querySelector("#loading")
 
     function displayLoading() {
         loader.classList.add("display")
@@ -15,32 +15,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function onClick() {
+        displayLoading()
         chrome.tabs.query({currentWindow: true, active: true},
         function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, 'hi', setUrlFound)
+            chrome.tabs.sendMessage(tabs[0].id, 'hi', loadingIndicator)
         })        
     } 
 
-    function setUrlFound (res) {
-        displayLoading()
-        var response = postAIResponse(res)
-        showElement(res)
-        hideLoading()
+    function loadingIndicator(res) {
+        setUrlFound(res)
+    }
 
-        alert(response)
+    function setUrlFound (res) {
+        var response = postAIResponse(res)
+        hideLoading()
+        document.getElementById('loading').style.display = "none"
+        showElement(res)
+
+        
         var emailRespond = document.getElementById('email-res')
         var detail = document.getElementById('detail')
         var containerId1 = document.getElementById('1')
         var containerImage = document.getElementById('image')
-        var loaderDiv = document.getElementById('loading')
 
         if (response == 0) {
-            loaderDiv.style.display = "none"
             emailRespond.innerText = "This Email is safe"
             detail.innerText = "Our system did not found any suspicious content on the email's subject, body or url(s) that might contains phishing."
             containerImage.src = "./image/safe-illustration.png"
         } else {
-            loaderDiv.style.display = "none"
             containerId1.style.backgroundColor = "rgb(248,110,110)"
             emailRespond.innerText = "This Email is Phishing"
             detail.innerText = "This email has suspicious content in its subject, body, or url(s) that are detected by our system."
