@@ -14,7 +14,6 @@
             "js": ["content.js"]
         }
     ],
-    "permissions": ["tabs"],
     "host_permissions": ["*://mail.google.com/*"],
     "action": {
         "default_popup": "popup.html",

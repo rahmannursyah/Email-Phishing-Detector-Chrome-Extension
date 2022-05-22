@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('button').addEventListener('click', onClick, false)
 
+    // Buat show loading indicator
     const loader = document.querySelector("#loading")
 
     function displayLoading() {
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loader.classList.remove("display")
     }
 
+    // Function yang dijalankan ketika click 'Detect'
     function onClick() {
         displayLoading()
         chrome.tabs.query({currentWindow: true, active: true},
@@ -26,12 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
         setUrlFound(res)
     }
 
+    // Menampilkan hasil return phishing or not dari google cloud
     function setUrlFound (res) {
         var response = postAIResponse(res)
         hideLoading()
         document.getElementById('loading').style.display = "none"
         showElement(res)
-
         
         var emailRespond = document.getElementById('email-res')
         var detail = document.getElementById('detail')

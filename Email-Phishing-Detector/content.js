@@ -5,17 +5,18 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     let emailBodyPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[3]/div[3]/div")
     let emailSubjectPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/table/tr/td[1]/div[2]/div[1]")
     let emailSenderPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[1]/table/tbody/tr[1]/td[1]/table/tbody/tr/td/h3")
-    // let emailAttachmentPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div[2]/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[3]")
+    // let emailAttachmentPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div[3]/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[3]/div[5]")
+    let bodyPath = getElementByXpath("/html/body")
 
     var emailBody = emailBodyPath.innerText
     var emailBodyUrl = emailBodyPath.getElementsByTagName("a")
     var emailSubjectHtml = emailSubjectPath.getElementsByTagName("h2")[0]
     var emailSenderHtml = emailSenderPath.getElementsByTagName("span")
-    // var emailAttachment = emailAttachmentPath.getElementByXpath("div")
+    var emailAttachment = bodyPath.innerText
     var urls = []
     var emailSender = ""
     var emailSubject = emailSubjectPath.getElementsByTagName("h2")[0].textContent
-    var isMultipart = 0
+    var isMultipart = []
 
     for (let index = 0; index < emailBodyUrl.length; index++) {
         if (!emailBodyUrl[index].href.includes("mailto")) {
@@ -35,10 +36,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }
     }
 
+    if (emailAttachment.includes('Attachments area') && emailAttachment.includes('Preview attachment') 
+    || (emailAttachment.includes('lampiran'))) {
+        isMultipart.push(1)
+    } else {
+        isMultipart.push(0)
+    }
+
     let urlFeatureFromEmail = getUrlFeatures(urls, emailBodyUrl)
     let bodyFeature = getEmailBodyFeatures(emailBody)
     let subjectFeature = getEmailSubjectFeatures(emailSubject)
-    let allFeaturesArr = [...urlFeatureFromEmail, ...bodyFeature, ...subjectFeature]
+    let allFeaturesArr = [...isMultipart, ...urlFeatureFromEmail, ...bodyFeature, ...subjectFeature]
 
     sendResponse({allFeatures: allFeaturesArr})
 })
@@ -58,7 +66,11 @@ function substring(myString) {
 // MARK: HEADER FEATURES
 
 function countSusWordInSubject(subjectInEmail) {
-    let susWord = ['bank', 'debit', 'verify', 'password', 'attention', 'credit', 'urgent', 'billing', 'account', 'invoice', 'important']
+    let susWord = ['account','your','update','notification','security','information','access','verify',
+    'important','limited','measure','notice','bank','please','online','flag','email','spam','member',
+    'possible','verification','message','confirm','question','urgent','address','required','card',
+    'billing','credit']
+    
     var count = 0
     var words = subjectInEmail.split(' ')
     var susWordsInBody = []
@@ -83,10 +95,6 @@ function countCharacterInSubject(subjectInEmail) {
 
 function countWordsInSubject(subjectInEmail) {
     return subjectInEmail.split(' ').length
-}
-
-function countSubjectRichness(subjectInEmail) {
-    return countWordsInSubject(subjectInEmail) / countCharacterInSubject(subjectInEmail)
 }
 
 // MARK: URL FEATURES
@@ -316,7 +324,9 @@ function countWordInBody(emailBody) {
     return emailBody.split(' ').length
 }
 
-let susWord = ['login', 'account', 'access', 'bank', 'credit', 'click', 'identity', 'incovenience', 'information', 'limited', 'log', 'minutes', 'password', 'recently', 'risk', 'social', 'security', 'service', 'suspended', 'urgent', 'calls', 'paid', 'need', 'gift', 'gifts', 'cards', 'card', 'urgently', 'response', 'needed', 'login', 'expiring', 'soon', 'immediate', 'immediately', 'free', 'detect', 'pay', 'job', 'access', 'expire', 'friend', 'lowest', 'price', 'serious', 'action', 'database', 'winner', 'refund', 'files', 'activate', 'activated', 'wage', 'vital', 'irregular', 'docs', 'invited', 'account', 'notice', 'service', 'bcourse', 'employee', 'employment', 'phone', 'information', 'suspension', 'verify', 'billing', 'urgent']
+let susWord = ['update','access','records','security','online','bank','address','mail','log','help',
+'protect','service','limited','assistance', 'password','user','here','id','message','customer',
+'agreement','team','fraud','sent','item','using','member','verify','confirm','reply','send']
 
 function countSusWordInBody(emailBody) {
     var count = 0
@@ -337,20 +347,19 @@ function countSusWordInBody(emailBody) {
     return count
 }
 
-function countBodyRichness(emailBody) {
-    var word = countWordInBody(emailBody)
-    var character = countCharacterInBody(emailBody)
-    var richness = word / character
-
-    return richness
-}
-
-function checkBodyHasUnsubscribe(emailBody) {
-    if (emailBody.includes('unsubscribe')) {
-        return 1
-    } else {
-        return 0
+function countUniqueWord(msg) {
+    var ct = 0
+    var not_unique_word = []
+    msg = msg.split(' ')
+    
+    for (m in msg) {
+        if (!not_unique_word.includes(m)) {
+            ct += 1
+            not_unique_word.push(m)
+        }
     }
+
+    return ct
 }
 
 // TOTAL FEATURES = 25
@@ -358,43 +367,27 @@ function checkBodyHasUnsubscribe(emailBody) {
 function getUrlFeatures(urlsInEmail, tagAElements) {
     if (urlsInEmail == "") {
         var totalUrlInEmail = 0
-        var urlWithAt = 0
         var susWordInUrl = 0
-        var isUrlWithIp = 0
-        var totalUrlWithIp = 0
         var totalDomainInUrl = 0
         var totalUrlWithImg = 0
-        var totalPeriodInUrl = 0
-        var isUrlWithPort = 0
         var totalUrlWithPort = 0
-        var isUrlShortened = 0
-        var totalShortenedUrl = 0
         var isHttpInUrl = 0
         var totalHttpUrl = 0
         var isLongUrl = 0
         var totalLongUrl = 0
-        var emailUrlFeaturesArr = new Array(urlWithAt, susWordInUrl, isUrlWithIp, totalDomainInUrl, totalUrlWithImg, totalUrlWithIp, totalUrlInEmail, totalPeriodInUrl
-            , totalUrlWithPort, isUrlWithPort, isUrlShortened, totalShortenedUrl, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl)
+        var emailUrlFeaturesArr = new Array(susWordInUrl, totalDomainInUrl, totalUrlWithImg, totalUrlInEmail, totalUrlWithPort, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl)
         return emailUrlFeaturesArr
     } else {
         var totalUrlInEmail = countUrlInEmail(urlsInEmail)
-        var urlWithAt = searchAtSymbolInUrl(urlsInEmail)
         var susWordInUrl = countSusWordInUrl(tagAElements)
-        var isUrlWithIp = checkForIpInUrl(urlsInEmail)
-        var totalUrlWithIp = countUrlsWithIp(urlsInEmail)
         var totalDomainInUrl = countDomainInUrl(urlsInEmail)
         var totalUrlWithImg = countUrlWithImgLink(urlsInEmail)
-        var totalPeriodInUrl = countPeriodInUrl(urlsInEmail)
-        var isUrlWithPort = checkUrlWithPort(urlsInEmail)
         var totalUrlWithPort = countUrlWithPort(urlsInEmail)
-        var isUrlShortened = checkForUrlShortening(urlsInEmail) 
-        var totalShortenedUrl = countUrlShortening(urlsInEmail)
         var isHttpInUrl = checkHttpInUrl(urlsInEmail)
         var totalHttpUrl = countUrlWithHttp(urlsInEmail)
         var isLongUrl = checkLongUrl(urlsInEmail)
         var totalLongUrl = countLongUrl(urlsInEmail)
-        var emailUrlFeaturesArr = new Array(urlWithAt, susWordInUrl, isUrlWithIp, totalDomainInUrl, totalUrlWithImg, totalUrlWithIp, totalUrlInEmail, totalPeriodInUrl
-            , totalUrlWithPort, isUrlWithPort, isUrlShortened, totalShortenedUrl, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl)
+        var emailUrlFeaturesArr = new Array(susWordInUrl, totalDomainInUrl, totalUrlWithImg, totalUrlInEmail, totalUrlWithPort, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl)
         return emailUrlFeaturesArr
     }
 }
@@ -404,15 +397,13 @@ function getEmailSubjectFeatures(emailSubject) {
         var totalSusWordInSubject = 0
         var totalCharacterInSubject = 0
         var totalWordsInSubject = 0
-        var totalSubjectRichness = 0
-        var emailSubjectFeaturesArr = new Array(totalSusWordInSubject, totalWordsInSubject, totalCharacterInSubject, totalSubjectRichness)
+        var emailSubjectFeaturesArr = new Array(totalSusWordInSubject, totalWordsInSubject, totalCharacterInSubject)
         return emailSubjectFeaturesArr
     } else {
         var totalSusWordInSubject = countSusWordInSubject(emailSubject)
         var totalCharacterInSubject = countCharacterInSubject(emailSubject)
         var totalWordsInSubject = countWordsInSubject(emailSubject)
-        var totalSubjectRichness = countSubjectRichness(emailSubject)
-        var emailSubjectFeaturesArr = new Array(totalSusWordInSubject, totalWordsInSubject, totalCharacterInSubject, totalSubjectRichness)
+        var emailSubjectFeaturesArr = new Array(totalSusWordInSubject, totalWordsInSubject, totalCharacterInSubject)
         return emailSubjectFeaturesArr
     }
 }
@@ -422,17 +413,15 @@ function getEmailBodyFeatures(emailBody) {
         var totalCharacterInBody = 0
         var totalWordsInBody = 0
         var totalSusWordInBody = 0
-        var totalBodyRichness = 0
-        var isBodyHasUnsubscribe = 0
-        var emailBodyFeaturesArr = new Array(isBodyHasUnsubscribe, totalCharacterInBody, totalWordsInBody, totalBodyRichness, totalSusWordInBody)
+        var totalUniqueWordInBody = 0
+        var emailBodyFeaturesArr = new Array(totalCharacterInBody, totalWordsInBody, totalSusWordInBody, totalUniqueWordInBody)
         return emailBodyFeaturesArr
     } else {
         var totalCharacterInBody = countCharacterInBody(emailBody)
         var totalWordsInBody = countWordInBody(emailBody)
         var totalSusWordInBody = countSusWordInBody(emailBody)
-        var totalBodyRichness = countBodyRichness(emailBody)
-        var isBodyHasUnsubscribe = checkBodyHasUnsubscribe(emailBody)
-        var emailBodyFeaturesArr = new Array(isBodyHasUnsubscribe, totalCharacterInBody, totalWordsInBody, totalBodyRichness, totalSusWordInBody)
+        var totalUniqueWordInBody = countUniqueWord(emailBody)
+        var emailBodyFeaturesArr = new Array(totalCharacterInBody, totalWordsInBody, totalSusWordInBody, totalUniqueWordInBody)
         return emailBodyFeaturesArr
     }
 }
