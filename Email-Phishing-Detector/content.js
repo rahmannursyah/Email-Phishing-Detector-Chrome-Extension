@@ -14,7 +14,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     var emailSenderHtml = emailSenderPath.getElementsByTagName("span")
     var emailAttachment = bodyPath.innerText
     var urls = []
-    var emailSender = ""
     var emailSubject = emailSubjectPath.getElementsByTagName("h2")[0].textContent
     var isMultipart = []
 
@@ -117,22 +116,6 @@ function countSusWordInUrl(tagAElements) {
         }
     }
     return count
-}
-
-function searchAtSymbolInUrl(myUrl) {
-    var totalAtSymbol = 0
-    
-    myUrl.forEach(url => {
-        if (url.includes('@')) {
-            for(let index = 0; index < url.length; index++) {
-                if (url[index] == "@") {
-                    totalAtSymbol += 1
-                }
-            }
-        }
-    });
-
-    return totalAtSymbol
 }
 
 function checkForIpInUrl(urlsInEmail) {

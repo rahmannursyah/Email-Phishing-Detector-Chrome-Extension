@@ -1,6 +1,6 @@
 {
     "name": "PhishTector",
-    "description": "Easily detect phishing email, so you don't have to worry about getting your account hacked or stolen",
+    "description": "Easily detect email phishing in Gmail, so you don't have to worry about getting your account hacked or stolen",
     "version": "0.0.1",
     "icons": {
         "16": "./icons/16.png",

@@ -20,7 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
         displayLoading()
         chrome.tabs.query({currentWindow: true, active: true},
         function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, 'hi', loadingIndicator)
+            var activeTab = tabs[0].url
+            if (activeTab != undefined) {
+                chrome.tabs.sendMessage(tabs[0].id, 'hi', loadingIndicator)
+            } else {
+                chrome.tabs.sendMessage(tabs[0].id, 'hi', displayWrongTabError)
+            }
         })        
     } 
 
@@ -55,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function postAIResponse(res) {
         var xhr = new XMLHttpRequest();
         var url = 'https://asia-southeast2-second-metrics-344913.cloudfunctions.net/modelcaller-v1/predict'
-        var dataFerdi = [0,2457,369,0.15018315018315018,0,0,5,42,0.11904761904761904,0,0,0,3,0,0,3,0,0,0,0,0,0,0,0,0]
         var data = JSON.stringify({
             'data': res.allFeatures
         })
@@ -84,6 +88,31 @@ document.addEventListener('DOMContentLoaded', function() {
             detectButton.style.display = "none"
             containerImage.style.display = "block"
         }
+    }
+
+    function displayWrongTabError() {
+        hideLoading()
+
+        var detail = document.getElementById('detail')
+        var containerId2 = document.getElementById('2')
+        var containerImage = document.getElementById('image')
+        var textId = document.getElementById('demo')
+        var detectButton = document.getElementById('3')
+        var loadingContainer = document.getElementById('loading')
+
+        containerId2.style.display = "block"
+        containerImage.style.display = "block"
+        textId.style.display = "none"
+        detectButton.style.display = "none"
+
+        loadingContainer.remove()
+        textId.remove()
+        detectButton.remove()
+        
+        detail.innerText = "Please run the extension on Gmail (mail.google.com)"
+        containerImage.src = "./image/instruction.gif"
+        containerImage.style.width = "300px"
+        containerImage.style.height = "200px"
     }
 
 } , false)
