@@ -5,7 +5,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     let emailBodyPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[3]/div[3]/div")
     let emailSubjectPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/table/tr/td[1]/div[2]/div[1]")
     let emailSenderPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[1]/table/tbody/tr[1]/td[1]/table/tbody/tr/td/h3")
-    // let emailAttachmentPath = getElementByXpath("/html/body/div[7]/div[3]/div/div[2]/div[1]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div[3]/div/table/tr/td[1]/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[3]/div[5]")
     let bodyPath = getElementByXpath("/html/body")
 
     var emailBody = emailBodyPath.innerText
@@ -45,7 +44,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     let urlFeatureFromEmail = getUrlFeatures(urls, emailBodyUrl)
     let bodyFeature = getEmailBodyFeatures(emailBody)
     let subjectFeature = getEmailSubjectFeatures(emailSubject)
-    let allFeaturesArr = [...isMultipart, ...urlFeatureFromEmail, ...bodyFeature, ...subjectFeature]
+    let allFeaturesArr = [...bodyFeature, ...subjectFeature, ...urlFeatureFromEmail]
 
     sendResponse({allFeatures: allFeaturesArr})
 })

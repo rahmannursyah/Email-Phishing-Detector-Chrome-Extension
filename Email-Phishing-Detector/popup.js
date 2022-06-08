@@ -22,7 +22,14 @@ document.addEventListener('DOMContentLoaded', function() {
         function (tabs) {
             var activeTab = tabs[0].url
             if (activeTab != undefined) {
-                chrome.tabs.sendMessage(tabs[0].id, 'hi', loadingIndicator)
+                if (activeTab.includes("inbox/") || activeTab.includes("starred/") || activeTab.includes("snoozed/") 
+                || activeTab.includes("imp/") || activeTab.includes("sent/") || activeTab.includes("drafts/") || activeTab.includes("social/") || 
+                activeTab.includes("updates/") || activeTab.includes("forums/") || activeTab.includes("promotions/") || activeTab.includes("chats/") || 
+                activeTab.includes("scheduled/") || activeTab.includes("all/") || activeTab.includes("spam/") || activeTab.includes("trash/") || activeTab.includes("search/")) {
+                    chrome.tabs.sendMessage(tabs[0].id, 'hi', loadingIndicator)
+                } else {
+                    chrome.tabs.sendMessage(tabs[0].id, 'hi', displayWrongTabError)
+                }
             } else {
                 chrome.tabs.sendMessage(tabs[0].id, 'hi', displayWrongTabError)
             }
@@ -109,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         textId.remove()
         detectButton.remove()
         
-        detail.innerText = "Please run the extension on Gmail (mail.google.com)"
+        detail.innerText = "Please run the extension inside a specific mail in Gmail (mail.google.com)"
         containerImage.src = "./image/instruction.gif"
         containerImage.style.width = "300px"
         containerImage.style.height = "200px"

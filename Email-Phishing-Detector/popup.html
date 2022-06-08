@@ -11,7 +11,6 @@
     <h1>PhishTector</h1>
 
     <p id="demo" align="center">Click on the 'Detect' button in the email that you think is suspicious 👀</p>
-    <!-- <br> -->
 
     <div id="loading"></div>
 
@@ -46,47 +45,12 @@
     <script src="popup.js"></script>
 
     <style>
-
         .test {
             margin: 0;
             position: absolute;
             left: 50%;
             -ms-transform: translateX(-50%);
             transform: translateX(-50%);
-        }
-
-        .detected-url-box {
-            position: absolute;
-            align-items: center;
-        }
-
-        .url-list {
-            font-size: 10px;
-            font-weight: 400;
-        }
-
-        #loading {
-            width: 2rem;
-            height: 2rem;
-            border: 5px solid #f3f3f3;
-            border-top: 6px solid #0f0e0f;
-            border-radius: 100%;
-            margin: auto;
-            visibility: hidden;
-            animation: spin 1s infinite linear;
-        }
-
-        #loading.display {
-            visibility: visible;
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
         }
 
         .button {
@@ -141,40 +105,8 @@
             margin-left: auto;
             margin-right: auto;
         }
-        /* .block-2 {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            color: #000000;
-            background-color: #FFFFFF;
-            width: 300px;
-            height: 230px;
-            border-radius: 8px;
-            font-family: 'Roboto';
-            font-weight: 600;
-            font-size: 10px;
-        } */
 
-        .container {
-            display: none;
-            background-color: linen;
-            min-width: 100px;
-            min-height: 250px;
-        }
-
-        .container-text-left {
-            position: absolute;
-            left: 16px;
-            width: 108px;
-        }
-
-        .container-text-right{
-            position: absolute;
-            right: 16px;
-            width: 108px;
-        }
-
-        .container-btn-middle{
+        .container-btn-middle {
             position: absolute;
             bottom: 20px;
         }
@@ -190,16 +122,37 @@
             font-size: small;
         }
 
-        p.sus-text {
-            color: red;
-        }
-
         html {
             position: relative;
             width: 340px;
             height: 400px;
             background-color: #f4f4f4;
         }
+
+        #loading {
+            width: 2rem;
+            height: 2rem;
+            border: 5px solid #f3f3f3;
+            border-top: 6px solid #0f0e0f;
+            border-radius: 100%;
+            margin: auto;
+            visibility: hidden;
+            animation: spin 1s infinite linear;
+        }
+
+        #loading.display {
+            visibility: visible;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
     </style>
 </body>
 </html>
