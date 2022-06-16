@@ -296,6 +296,54 @@ function countLongUrl(urlsInEmail) {
     return count
 }
 
+function totalSusSubdomain(urlsInEmail) {
+    var ct = 0
+    var dotCt = 0
+    
+    urlsInEmail.forEach(function (item, index) {
+        let domain = (new URL(item))
+        let hostname = domain.hostname
+        
+        for (let i = 0; i < hostname.length; i++) {
+            if (hostname[i] == '.') {
+                dotCt += 1
+            }
+        }
+        if (dotCt > 0) {
+            ct += 1
+        }
+        
+        dotCt = 0
+    })
+
+    return ct
+}
+
+function totalDash(urlsInEmail) {
+    var ct = 0
+
+    urlsInEmail.forEach(function (item) {
+        if (item.includes("-")) {
+            ct += 1
+        }
+    })
+
+    return ct
+}
+
+function totalDoubleSlash(urlsInEmail) {
+    ct = 0
+    
+    urlsInEmail.forEach(function (item) {
+        url = item.replace(/^https?:\/\//, '')
+        
+        if (url.includes("//")) {
+            ct += 1
+        }
+    })
+
+    return ct    
+}
 // MARK: BODY FEATURES
 
 function countCharacterInBody(emailBody) {
@@ -344,7 +392,7 @@ function countUniqueWord(msg) {
     return ct
 }
 
-// TOTAL FEATURES = 25
+// TOTAL FEATURES = 19
 
 function getUrlFeatures(urlsInEmail, tagAElements) {
     if (urlsInEmail == "") {
@@ -357,7 +405,10 @@ function getUrlFeatures(urlsInEmail, tagAElements) {
         var totalHttpUrl = 0
         var isLongUrl = 0
         var totalLongUrl = 0
-        var emailUrlFeaturesArr = new Array(susWordInUrl, totalDomainInUrl, totalUrlWithImg, totalUrlInEmail, totalUrlWithPort, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl)
+        var totalSusSubdomainInUrl = 0
+        var totalDashInUrl = 0
+        var totalDoubleSlashInUrl = 0
+        var emailUrlFeaturesArr = new Array(susWordInUrl, totalDomainInUrl, totalUrlWithImg, totalUrlInEmail, totalUrlWithPort, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl, totalSusSubdomainInUrl, totalDashInUrl, totalDoubleSlashInUrl)
         return emailUrlFeaturesArr
     } else {
         var totalUrlInEmail = countUrlInEmail(urlsInEmail)
@@ -369,7 +420,10 @@ function getUrlFeatures(urlsInEmail, tagAElements) {
         var totalHttpUrl = countUrlWithHttp(urlsInEmail)
         var isLongUrl = checkLongUrl(urlsInEmail)
         var totalLongUrl = countLongUrl(urlsInEmail)
-        var emailUrlFeaturesArr = new Array(susWordInUrl, totalDomainInUrl, totalUrlWithImg, totalUrlInEmail, totalUrlWithPort, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl)
+        var totalSusSubdomainInUrl = totalSusSubdomain(urlsInEmail)
+        var totalDashInUrl = totalDash(urlsInEmail)
+        var totalDoubleSlashInUrl = totalDoubleSlash(urlsInEmail)
+        var emailUrlFeaturesArr = new Array(susWordInUrl, totalDomainInUrl, totalUrlWithImg, totalUrlInEmail, totalUrlWithPort, isLongUrl, totalLongUrl, isHttpInUrl, totalHttpUrl, totalSusSubdomainInUrl, totalDashInUrl, totalDoubleSlashInUrl)
         return emailUrlFeaturesArr
     }
 }

@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             emailRespond.innerText = "This Email is safe"
             detail.innerText = "Our system did not found any suspicious content on the email's subject, body or url(s) that might contains phishing."
             containerImage.src = "./image/safe-illustration.png"
-        } else {
+        } else if (response == 1) {
             containerId1.style.backgroundColor = "rgb(248,110,110)"
             emailRespond.innerText = "This Email is Phishing"
             detail.innerText = "This email has suspicious content in its subject, body, or url(s) that are detected by our system."
