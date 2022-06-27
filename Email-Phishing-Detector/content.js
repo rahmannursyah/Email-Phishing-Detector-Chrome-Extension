@@ -17,8 +17,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     var isMultipart = []
 
     for (let index = 0; index < emailBodyUrl.length; index++) {
-        if (!emailBodyUrl[index].href.includes("mailto")) {
-            urls.push(emailBodyUrl[index].href)
+        if (emailBodyUrl[index].href != null && emailBodyUrl[index].href != "") {
+            if (!emailBodyUrl[index].href.includes("mailto")) {
+                if (!urls.includes(emailBodyUrl[index].href)) {
+                    urls.push(emailBodyUrl[index].href)
+                }
+            }
         }
     }
 
@@ -32,13 +36,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             emailSender = tmpEmail
             break
         }
-    }
-
-    if (emailAttachment.includes('Attachments area') && emailAttachment.includes('Preview attachment') 
-    || (emailAttachment.includes('lampiran'))) {
-        isMultipart.push(1)
-    } else {
-        isMultipart.push(0)
     }
 
     let urlFeatureFromEmail = getUrlFeatures(urls, emailBodyUrl)
@@ -157,7 +154,6 @@ function countUrlsWithIp(urlsInEmail) {
 
 function countDomainInUrl(urlsInEmail) {
     var domain = []
-
     urlsInEmail.forEach(url => {
         let d = (new URL(url))
         if (!domain.includes(d)) {
