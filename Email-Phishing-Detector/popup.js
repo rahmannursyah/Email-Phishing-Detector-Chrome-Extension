@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function postAIResponse(res) {
         var xhr = new XMLHttpRequest();
-        var url = 'https://model-caller-gen-2-adxpfrj6yq-as.a.run.app/predict'
+        var url = 'https://asia-southeast2-second-metrics-344913.cloudfunctions.net/modelcaller-v1/predict'
         var data = JSON.stringify({
             'data': res.allFeatures
         })

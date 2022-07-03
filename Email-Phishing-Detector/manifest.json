@@ -1,7 +1,7 @@
 {
     "name": "PhishTector - Gmail Phishing Detector",
     "description": "Easily detect email phishing in Gmail, so you don't have to worry about getting your account hacked or stolen",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icons": {
         "16": "./icons/16.png",
         "48": "./icons/48.png",
